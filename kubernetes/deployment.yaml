@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wisecow-app
+  labels:
+    app: wisecow-app
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: wisecow-app
+  template:
+    metadata:
+      lables:
+        app: wisecow-app
+    spec:
+      containers:
+        -name: wisecow-app
+         image: bhagwathudge/wisecow-app:latest
+         ports:
+          - containerPort: 4499
