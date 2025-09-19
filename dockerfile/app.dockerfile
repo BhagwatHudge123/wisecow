@@ -1,21 +1,25 @@
 FROM debian:stable
 
-# Test network connectivity (you can comment this out if you don’t need it)
-RUN apt-get update && apt-get install -y curl && curl -I https://deb.debian.org
+# Ensure the system is up to date and install curl for network checks
+RUN apt-get update && apt-get install -y \
+    curl \
+    apt-transport-https \
+    gnupg2 \
+    ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install necessary dependencies
 RUN apt-get update && apt-get install -y \
-    apt-transport-https \
     netcat \
     fortune-mod \
     cowsay \
-    bash && \
-    rm -rf /var/lib/apt/lists/*
+    bash \
+  && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /app
 
-# Copy script file to /app directory
+# Copy the script file to the /app directory
 COPY wisecow.sh /app/wisecow.sh
 
 # Make the script executable
