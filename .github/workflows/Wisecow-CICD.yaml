@@ -1,0 +1,48 @@
+name: Wisecow-CICD
+
+on:
+  push:
+    branches: ["main"]
+env:
+  IMAGE_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/wisecow-app  
+    
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted,linux,x64]
+    steps:
+    - name: checkout repo
+      uses: action/checkout@v4
+      
+    - name: login to dockerhub
+      uses: action/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+           
+    - name: Build and puch docker image to docker hub
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./dockerfile
+        push: true
+        tags: ${{ env.IMAGE-_REPO }}:latest
+        
+    - name: Check kind is installed in server or not
+      run: |
+          kind --version || (curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64 && chmod +x ./kind && sudo mv ./kind /usr/local/bin/kind) 
+          
+    - name: upload image into kind
+      run: |
+          kind load docker-image ${{ env.IMAGE_REPO }}:latest --name app-cluster
+          
+    - name: Deploy to kind
+      run: |
+          sed "s|IMAGE_PLACEHOLDER|${{ env.IMAGE_REPO }}:latest|g" kubernetes/deployment.yaml.tpl > kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl rollout status deployment/wisecow-app --timeout=120s
+          kubectl get pods -o wide
+         
+                 
+ 
+ 
