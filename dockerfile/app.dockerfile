@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:stable
 
 # Install necessary dependencies
 RUN apt-get update -o Debug::pkgProblemResolver=true -o Dpkg::Progress-Fancy="1" && apt-get install -y \
