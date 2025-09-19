@@ -1,9 +1,9 @@
 FROM debian:stable
 
 # Change repository mirror to a different one
-RUN sed -i 's/http:\/\/deb.debian.org/http:\/\/ftp.debian.org/' /etc/apt/sources.list
+RUN sed -i 's#http://deb.debian.org#http://ftp.debian.org#' /etc/apt/sources.list
 
-# Test network connectivity
+# Test network connectivity (you can comment this out if you don’t need it)
 RUN apt-get update && apt-get install -y curl && curl -I https://deb.debian.org
 
 # Install necessary dependencies
