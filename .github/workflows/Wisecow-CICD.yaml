@@ -37,7 +37,6 @@ jobs:
           
     - name: Deploy to kind
       run: |
-          sed "s|IMAGE_PLACEHOLDER|${{ env.IMAGE_REPO }}:latest|g" kubernetes/deployment.yaml.tpl > kubernetes/deployment.yaml
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
           kubectl rollout status deployment/wisecow-app --timeout=120s
