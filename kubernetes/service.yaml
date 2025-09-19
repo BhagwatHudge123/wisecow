@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata: 
+   name: wise-cow-app
+spec:
+  selector:
+    app: wisecow-app
+  ports:
+   - protocol: TCP
+     port: 80
+     targetPort: 4499
+     type: NodePort
