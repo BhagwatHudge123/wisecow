@@ -11,10 +11,10 @@ jobs:
     runs-on: [self-hosted,linux,x64]
     steps:
     - name: checkout repo
-      uses: action/checkout@v4
+      uses: actions/checkout@v4
       
     - name: login to dockerhub
-      uses: action/login-action@v2
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
