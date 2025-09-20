@@ -1,7 +1,7 @@
 # Use Ubuntu as the base image
 FROM ubuntu:20.04
 
-# Install required packages
+# Install required packagess
 RUN apt-get update && apt-get install -y \
     netcat \
     fortune-mod \
