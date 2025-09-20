@@ -33,7 +33,7 @@ jobs:
           
     - name: upload image into kind
       run: |
-          kind load docker-image ${{ env.IMAGE_REPO }}:latest --name app-cluster
+          kind load docker-image ${{ env.IMAGE_REPO }}:latest --name app-cluster2
           
     - name: Deploy to kind
       run: |
