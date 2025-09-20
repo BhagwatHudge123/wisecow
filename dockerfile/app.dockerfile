@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-# Update package list and install dependencies explicitly, adding debug information
+# Update package list and install dependencies explicitly, adding debug informations
 RUN apt-get update \
     && apt-get install -y \
     netcat \
