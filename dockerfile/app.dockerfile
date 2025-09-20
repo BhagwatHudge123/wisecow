@@ -1,6 +1,14 @@
+# Use an official Ubuntu as a parent image
 FROM ubuntu:20.04
 
-# Update package list and install dependencies explicitly, adding debug information
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/usr/games:${PATH}"
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update package list and install dependencies
 RUN apt-get update \
     && apt-get install -y \
     netcat \
@@ -8,22 +16,17 @@ RUN apt-get update \
     cowsay \
     bash \
     && echo "Successfully installed cowsay and fortune-mod" \
-    && dpkg -l | grep -E 'netcat|fortune-mod|cowsay|bash' \
+    && which fortune \
+    && which cowsay \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory to /app
-WORKDIR /app
-
-# Copy the script
+# Copy your script into the container
 COPY wisecow.sh /app/wisecow.sh
 
-# Make sure the script is executable and check permissions
+# Make the script executable
 RUN chmod +x /app/wisecow.sh \
     && echo "Script is now executable" \
     && ls -l /app/wisecow.sh
 
-# Expose the necessary port
-EXPOSE 4499
-
-# Command to run the script
-CMD ["/bin/bash", "/app/wisecow.sh"]
+# Set entrypoint to bash
+ENTRYPOINT ["/bin/bash"]
