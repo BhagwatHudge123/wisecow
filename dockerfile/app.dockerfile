@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-# Update package list and install dependencies explicitly, adding debug informations
+# Update package list and install dependencies explicitly, adding debug information
 RUN apt-get update \
     && apt-get install -y \
     netcat \
@@ -8,8 +8,7 @@ RUN apt-get update \
     cowsay \
     bash \
     && echo "Successfully installed cowsay and fortune-mod" \
-    && which fortune \
-    && which cowsay \
+    && dpkg -l | grep -E 'netcat|fortune-mod|cowsay|bash' \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory to /app
