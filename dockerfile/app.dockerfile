@@ -1,23 +1,30 @@
-# Use Ubuntu as the base image
 FROM ubuntu:20.04
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
+# Update package list and install dependencies explicitly, adding debug information
+RUN apt-get update \
+    && apt-get install -y \
     netcat \
-    fortune \
+    fortune-mod \
     cowsay \
     bash \
+    && echo "Successfully installed cowsay and fortune-mod" \
+    && which fortune \
+    && which cowsay \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory to /app
 WORKDIR /app
 
-# Copy the script into the container
+# Copy the script
 COPY wisecow.sh /app/wisecow.sh
-RUN chmod +x /app/wisecow.sh
 
-# Expose port 4499 
+# Make sure the script is executable and check permissions
+RUN chmod +x /app/wisecow.sh \
+    && echo "Script is now executable" \
+    && ls -l /app/wisecow.sh
+
+# Expose the necessary port
 EXPOSE 4499
 
-# Run the script when the container starts
+# Command to run the script
 CMD ["/bin/bash", "/app/wisecow.sh"]
