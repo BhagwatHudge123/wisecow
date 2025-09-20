@@ -1,8 +1,8 @@
 # Use an official Ubuntu as a parent image
-FROM ubuntu:20.04
+FROM --platform=linux/amd64 ubuntu:20.04
 
 # Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive
+#ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/usr/games:${PATH}"
 
 # Set the working directory in the container
